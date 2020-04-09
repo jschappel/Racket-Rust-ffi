@@ -1,4 +1,21 @@
 #lang racket
 (require ffi/unsafe)
 
-(define rust-lib (ffi-lib (build-path (current-directory) "/racketffi/src/racketffi.h")))
+;; add the rust library
+(define rust-lib (ffi-lib
+                  (build-path (current-directory) "racketffi" "target" "debug" "racketffi")))
+
+
+;; set the rust add fine to a variable
+(define rust-add (get-ffi-obj "add_from_rust" rust-lib
+                              (_fun _int _int -> _int)))
+
+
+(define add_ten (get-ffi-obj "add_ten" rust-lib
+                             (_fun _int -> _int)))
+
+
+
+;; call the function
+(rust-add 5 4)
+(add_ten 5)
